@@ -8,7 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
         symptomForm.addEventListener('submit', async (event) => {
             event.preventDefault(); // Prevent the form from reloading the page
 
-            const symptoms = document.getElementById('symptoms').value;
+            const symptomsSelect = document.getElementById('symptoms');
+            const selectedSymptoms = Array.from(symptomsSelect.selectedOptions).map(option => option.value);
+            const symptoms = selectedSymptoms.join(',');
 
             if (symptoms.trim() === '') {
                 resultsDiv.innerHTML = '<p class="text-danger">Please enter your symptoms before submitting.</p>';
@@ -50,3 +52,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
