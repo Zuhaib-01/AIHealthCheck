@@ -33,7 +33,9 @@ except Exception as e:
 # --- 2. Define Web Routes ---
 @app.route('/')
 def index():
-    return render_template('index.html')
+    """Renders the home page and passes the list of symptoms."""
+    # The symptom_columns list was created during the data loading phase
+    return render_template('index.html', symptoms=symptom_columns)
 
 @app.route('/predict', methods=['POST'])
 def predict():
