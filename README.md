@@ -9,6 +9,8 @@ An AI-powered symptom checker
 ```
 AI_SymptomChecker/
 ├── app.py
+├── data/
+│   └── symptom_dataset.csv
 ├── favicon/
 │
 ├── templates/
@@ -23,6 +25,7 @@ AI_SymptomChecker/
 │   │   └── style.css
 │   └── js/
 │       └── script.js
+
 
 
 
