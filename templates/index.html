@@ -1,14 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIHealthCheck</title>
+{% extends 'base.html' %}
 
-    <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
-    
-    <script src="assets/js/script.js"></script>
-</body>
-</html>
+{% block title %}Home - Symptom Checker{% endblock %}
+
+{% block content %}
+<div class="text-center p-5 mb-4 bg-light rounded-3">
+    <h1 class="display-4">AI-Powered Symptom Checker</h1>
+    <p class="lead">Enter your symptoms below and our advanced AI will provide a preliminary analysis. This is not a substitute for professional medical advice.</p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <form id="symptom-form">
+            <div class="mb-3">
+                <label for="symptoms" class="form-label">Describe your symptoms</label>
+                <textarea class="form-control" id="symptoms" rows="6" placeholder="e.g., persistent headache, mild fever, sore throat..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Check Symptoms</button>
+        </form>
+        <div id="results" class="mt-4">
+            </div>
+    </div>
+</div>
+{% endblock %}
