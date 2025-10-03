@@ -26,6 +26,9 @@ try:
     model = DecisionTreeClassifier()
     model.fit(X_train, y_train)
     print("Model trained successfully!")
+    predictions = model.predict(X_test)
+    accuracy = accuracy_score(y_test, predictions)
+    print(f"Model Accuracy: {accuracy * 100:.2f}%")
 
 except Exception as e:
     print(f"Error during model training: {e}")
