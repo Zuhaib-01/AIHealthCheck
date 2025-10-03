@@ -12,8 +12,13 @@
     <div class="col-md-8">
         <form id="symptom-form">
             <div class="mb-3">
-                <label for="symptoms" class="form-label">Describe your symptoms</label>
-                <textarea class="form-control" id="symptoms" rows="6" placeholder="e.g., persistent headache, mild fever, sore throat..."></textarea>
+                <label for="symptoms" class="form-label">Select your symptoms</label>
+                <select class="form-select" id="symptoms" name="symptoms" multiple>
+                    {% for symptom in symptoms %}
+                        <option value="{{ symptom }}">{{ symptom.replace('_', ' ') | title }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-text">You can select multiple symptoms.</div>
             </div>
             <button type="submit" class="btn btn-primary w-100">Check Symptoms</button>
         </form>
