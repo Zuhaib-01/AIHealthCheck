@@ -1,0 +1,25 @@
+/* Use a clean, modern font for the body */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f8f9fa; /* Light gray background */
+}
+
+/* Ensure the footer stays at the bottom */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1; /* Allows the main content to grow and push the footer down */
+}
+
+/* Style for the results section on the index page */
+#results {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    min-height: 100px;
+}
