@@ -1,8 +1,20 @@
 from flask import Flask, render_template
+import pandas as pd # Import the pandas library
 
 # Initialize the Flask app
-# We specify 'assets' as the static folder name instead of the default 'static'
 app = Flask(__name__, static_folder='assets')
+
+# --- Load the dataset ---
+# This code runs once when the application starts.
+try:
+    data = pd.read_csv('data/symptom_dataset.csv')
+    print("Dataset loaded successfully!")
+    # Print the first 5 rows to the terminal to verify
+    print(data.head()) 
+except Exception as e:
+    print(f"Error loading dataset: {e}")
+    data = None
+# -------------------------
 
 @app.route('/')
 def index():
@@ -25,5 +37,4 @@ def about():
     return render_template('about.html')
 
 if __name__ == '__main__':
-    # Enables debug mode for auto-reloading upon code changes
     app.run(debug=True)
