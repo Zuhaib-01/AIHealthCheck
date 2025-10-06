@@ -29,5 +29,36 @@ AI_SymptomChecker/
 │       └── script.js
 
 
+🩺 AI Symptom Checker
+
+A smart web app that predicts potential medical conditions from your symptoms using a powerful machine learning model.
+
+
+✨ Key Features
+
+🧠 AI-Powered Predictions: Uses a trained Scikit-learn model to provide accurate analysis.
+
+👆 Interactive UI: Select symptoms easily from a user-friendly dropdown menu.
+
+⚡ Real-Time Results: Get instant predictions without leaving the page.
+
+🌐 Full-Stack Application: Built with a Python & Flask backend and a clean HTML/JS frontend.
+
+
+💻 Tech Stack
+
+[ Backend ]
+
+Python
+Flask
+Pandas
+Scikit-learn
+
+[ Frontend ]
+
+HTML5
+CSS3 (Bootstrap)
+JavaScript
+
 
 
