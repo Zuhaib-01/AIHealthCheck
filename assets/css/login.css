@@ -1,0 +1,51 @@
+/* 🌈 Background */
+.login-section {
+  min-height: 90vh;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 🪪 Login Card */
+.login-card {
+  width: 380px;
+  background: #fff;
+  border-radius: 15px;
+  padding: 30px;
+  transition: box-shadow 0.3s ease;
+}
+
+.login-card:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* 🧾 Inputs */
+.login-card input {
+  border-radius: 8px;
+  height: 45px;
+  font-size: 0.95rem;
+}
+
+/* 🔘 Button */
+.login-card button {
+  border-radius: 8px;
+  font-weight: 600;
+  height: 45px;
+}
+
+/* 🔗 Links */
+.login-card a {
+  color: #007bff;
+}
+
+.login-card a:hover {
+  text-decoration: underline;
+}
+
+/* 📱 Responsive */
+@media (max-width: 576px) {
+  .login-card {
+    width: 90%;
+  }
+}
