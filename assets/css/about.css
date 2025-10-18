@@ -1,0 +1,6 @@
+.team-section .card h5 {
+    font-size: 1rem;
+    white-space: nowrap; /* prevent wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* optional: adds ... if it still overflows */
+}
