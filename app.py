@@ -6,7 +6,9 @@ from pathlib import Path
 app = Flask(__name__, static_folder='assets')
 app.secret_key = "replace_this_with_a_random_secret"  # change to a secure random string in production
 
-DB_PATH = Path("database/users.db")
+BASE_DIR = Path(__file__).parent.resolve()  # AIHealthCheck folder
+DB_PATH = BASE_DIR / "database" / "users.db"
+
 
 def get_db():
     if 'db' not in g:

@@ -1,13 +1,17 @@
-import sqlite3
 from pathlib import Path
+import sqlite3
 
-DB_PATH = Path("database/users.db")
+# --- Set project root explicitly ---
+PROJECT_ROOT = Path(__file__).parent.parent.resolve()  # parent of utils folder
+
+# --- Database path inside main project folder ---
+DB_PATH = PROJECT_ROOT / "database" / "users.db"
 DB_PATH.parent.mkdir(exist_ok=True)
 
 conn = sqlite3.connect(DB_PATH)
 c = conn.cursor()
 
-# users table
+# --- Users table ---
 c.execute('''
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,7 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 ''')
 
-# optional: results table to store user symptom checks / predictions
+# --- Results table ---
 c.execute('''
 CREATE TABLE IF NOT EXISTS results (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
