@@ -106,6 +106,13 @@ def dashboard():
                       (session['user_id'],)).fetchall()
     return render_template('dashboard.html', results=rows)
 
+# ---------- protected chatbot ----------
+@app.route('/chatbot')
+@login_required
+def chatbot():
+    return render_template('chatbot.html')
+
+
 # ---------- save a sample result endpoint ----------
 # Example of how to save a symptom-check result (POST from your symptom form)
 @app.route('/save_result', methods=['POST'])
