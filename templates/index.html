@@ -1,92 +1,47 @@
-{% extends 'base.html' %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Health Check</title>
-  <!-- <link rel="shortcut icon" href="../favicon/favicon.png" type="image/x-icon"> -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon/favicon.png') }}">
+{% block title %}Home - AI Health Check{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% endblock %}
 
-  <!-- Bootstrap CSS (for easy styling) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- <link rel="stylesheet" href="../assets/css/style.css"> -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+{% block content %}
 
-</head>
+<!-- 🏠 Hero Section -->
+<section class="hero d-flex align-items-center justify-content-center text-center">
+  <div class="container">
+    <h1 class="fw-bold">Your AI-Powered Health Assistant</h1>
+    <p class="lead">Check your symptoms, assess disease risks, and get instant insights — all in one place.</p>
+    <a href="{{ url_for('login') }}" class="btn btn-primary">Get Started</a>
+  </div>
+</section>
 
-<body>
-
-  <!-- 🌐 Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <!-- <a class="navbar-brand fw-bold" href="#">AI Health Check</a> -->
-       <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">AI Health Check</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <!-- <li class="nav-item"><a class="nav-link active" href="#">Home</a></li> -->
-          <!-- <li class="nav-item"><a class="nav-link" href="about.html">About</a></li> -->
-          <!-- <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li> -->
-          <!-- <li class="nav-item"><a class="nav-link" href="signup.html">Sign Up</a></li> -->
-          <li class="nav-item"><a class="nav-link active" href="{{ url_for('home') }}">Home</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a></li>
-
-        </ul>
+<!-- 💡 Features Section -->
+<section class="features py-5">
+  <div class="container text-center">
+    <h2 class="mb-4 fw-bold">What You Can Do</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm border-0">
+          <h5>🧠 Symptom Checker</h5>
+          <p>Enter your symptoms and get a list of possible conditions instantly.</p>
+        </div>
       </div>
-    </div>
-  </nav>
-
-  <!-- 🏠 Hero Section -->
-  <section class="hero d-flex align-items-center justify-content-center text-center">
-    <div class="container">
-      <h1 class="fw-bold">Your AI-Powered Health Assistant</h1>
-      <p class="lead">Check your symptoms, assess disease risks, and get instant insights — all in one place.</p>
-      <a href="{{ url_for('login') }}" class="btn btn-primary">Get Started</a>
-    </div>
-  </section>
-
-  <!-- 💡 Features Section -->
-  <section class="features py-5">
-    <div class="container text-center">
-      <h2 class="mb-4 fw-bold">What You Can Do</h2>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card p-3 shadow-sm border-0">
-            <h5>🧠 Symptom Checker</h5>
-            <p>Enter your symptoms and get a list of possible conditions instantly.</p>
-          </div>
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm border-0">
+          <h5>❤️ Disease Risk Prediction</h5>
+          <p>Find out your risk level for chronic diseases like diabetes and heart disease.</p>
         </div>
-        <div class="col-md-4">
-          <div class="card p-3 shadow-sm border-0">
-            <h5>❤️ Disease Risk Prediction</h5>
-            <p>Find out your risk level for chronic diseases like diabetes and heart disease.</p>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card p-3 shadow-sm border-0">
-            <h5>🙂 Mental Health Support</h5>
-            <p>Answer a few questions to assess your stress, anxiety, or depression levels.</p>
-          </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm border-0">
+          <h5>🙂 Mental Health Support</h5>
+          <p>Answer a few questions to assess your stress, anxiety, or depression levels.</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 📞 Footer -->
-  <footer class="bg-dark text-white text-center py-3">
-    <p class="mb-0">&copy; 2025 AI Health Check</p>
-  </footer>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+{% endblock %}
