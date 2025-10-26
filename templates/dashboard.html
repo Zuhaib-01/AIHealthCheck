@@ -8,15 +8,14 @@
 
 {% block content %}
 <section class="dashboard-section py-5">
-  <div class="container">
+  <div class="container-fluid">
     <!-- Welcome -->
     <h2 class="mb-4 text-primary">Welcome, {{ session['user_name'] }}!</h2>
     <p class="mb-4">Here are your recent health checks and predictions.</p>
 
-    <!-- Action Buttons -->
+    <!-- Open Chatbot Button -->
     <div class="mb-4">
-      <a href="{{ url_for('home') }}" class="btn btn-success me-2">Check Symptoms</a>
-      <a href="{{ url_for('home') }}" class="btn btn-info">Predict Disease Risk</a>
+      <a href="{{ url_for('home') }}" class="btn btn-success">Open Chatbot</a>
     </div>
 
     <!-- Recent Results -->

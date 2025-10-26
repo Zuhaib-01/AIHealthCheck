@@ -1,6 +1,7 @@
 /* --- General Reset --- */
 body {
   font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #007bff, #00d4ff);
   color: #333;
 }
 

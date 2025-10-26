@@ -1,7 +1,7 @@
 /* Dashboard Section */
 .dashboard-section {
     min-height: 80vh;
-    background: linear-gradient(135deg, #007bff33, #00c6ff33);
+    background: linear-gradient(to bottom right, #007bff, #00d4ff);
     color: #333;
 }
 
