@@ -1,0 +1,36 @@
+/* Dashboard Section */
+.dashboard-section {
+    min-height: 80vh;
+    background: linear-gradient(135deg, #007bff33, #00c6ff33);
+    color: #333;
+}
+
+/* Buttons */
+.dashboard-section .btn {
+    border-radius: 8px;
+    font-weight: 600;
+    transition: transform 0.2s ease;
+}
+
+.dashboard-section .btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Table */
+.dashboard-section table {
+    font-size: 0.95rem;
+}
+
+.dashboard-section thead {
+    background-color: #007bff;
+    color: white;
+}
+
+.dashboard-section tbody tr:hover {
+    background-color: #e0f7ff;
+}
+
+/* Card */
+.dashboard-section .card {
+    border-radius: 12px;
+}
