@@ -1,64 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About - AI Health Check</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/css/about.css">
-  <!-- <link rel="shortcut icon" href="../favicon/favicon.png" type="image/x-icon"> -->
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon/favicon.png') }}">
-</head>
+{% extends "base.html" %}
 
-<body>
+{% block title %}About - AI Health Check{% endblock %}
 
-  <!-- 🔙 Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand fw-bold" href="index.html">AI Health Check</a>
-    </div>
-  </nav>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+{% endblock %}
 
-  <!-- 🧠 About Section -->
-  <section class="about-section py-5">
-    <div class="container text-center">
-      <h1 class="fw-bold text-primary mb-4">About AI Health Check</h1>
-      <p class="lead mx-auto" style="max-width: 700px;">
-        AI Health Check is an AI-powered web platform that helps users check their symptoms,
-        predict potential health risks, and receive preventive care insights — quickly and privately.
-      </p>
-    </div>
-  </section>
+{% block content %}
 
-  <!-- ⚙️ Features Section -->
-  <section class="features-section py-5 bg-light">
-    <div class="container text-center">
-      <h2 class="fw-bold mb-4 text-success">Our Key Features</h2>
-      <div class="row g-4">
-        <div class="col-md-4">
-          <div class="card p-3 shadow-sm border-0">
-            <h5>🩺 Symptom Checker</h5>
-            <p>Analyze your symptoms instantly and get likely causes and advice.</p>
-          </div>
+<!-- 🧠 About Section -->
+<section class="about-section py-5">
+  <div class="container text-center">
+    <h1 class="fw-bold text-primary mb-4">About AI Health Check</h1>
+    <p class="lead mx-auto" style="max-width: 700px;">
+      AI Health Check is an AI-powered web platform that helps users check their symptoms,
+      predict potential health risks, and receive preventive care insights — quickly and privately.
+    </p>
+  </div>
+</section>
+
+<!-- ⚙️ Features Section -->
+<section class="features-section py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-4 text-success">Our Key Features</h2>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm border-0">
+          <h5>🩺 Symptom Checker</h5>
+          <p>Analyze your symptoms instantly and get likely causes and advice.</p>
         </div>
-        <div class="col-md-4">
-          <div class="card p-3 shadow-sm border-0">
-            <h5>📊 Disease Risk Prediction</h5>
-            <p>Estimate your risk for common chronic diseases using smart AI models.</p>
-          </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm border-0">
+          <h5>📊 Disease Risk Prediction</h5>
+          <p>Estimate your risk for common chronic diseases using smart AI models.</p>
         </div>
-        <div class="col-md-4">
-          <div class="card p-3 shadow-sm border-0">
-            <h5>🧠 Mental Health Insights</h5>
-            <p>Understand your stress and mood patterns with simple questionnaires.</p>
-          </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-3 shadow-sm border-0">
+          <h5>🧠 Mental Health Insights</h5>
+          <p>Understand your stress and mood patterns with simple questionnaires.</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 👥 Team Section -->
-  <section class="team-section py-5">
+<!-- 👥 Team Section -->
+<section class="team-section py-5">
   <div class="container text-center">
     <h2 class="fw-bold mb-4 text-primary">Our Team</h2>
     <p class="mb-3">Developed by <strong>Team AI Health Check</strong></p>
@@ -92,12 +81,4 @@
   </div>
 </section>
 
-
-  <!-- 📞 Footer -->
-  <footer class="bg-dark text-white text-center py-3">
-    <p class="mb-0">&copy; 2025 AI Health Check</p>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}
