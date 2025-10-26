@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 from pathlib import Path
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='assets')
 app.secret_key = "replace_this_with_a_random_secret"  # change to a secure random string in production
 
 DB_PATH = Path("database/users.db")
