@@ -13,15 +13,29 @@
   <div class="signup-card shadow p-4">
     <h3 class="text-center mb-4 fw-bold text-primary">Create Account</h3>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="mb-3">
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+
     <form method="POST" action="{{ url_for('signup') }}">
       <div class="mb-3">
-        <label for="name" class="form-label">Full Name</label>
-        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+        <label for="name" class="form-label">Name</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" value="{{ name if name else '' }}" required>
       </div>
 
       <div class="mb-3">
         <label for="email" class="form-label">Email Address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" value="{{ email if email else '' }}" required>
       </div>
 
       <div class="mb-3">

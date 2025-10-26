@@ -52,8 +52,8 @@ def signup():
                        (name, email, pw_hash))
             db.commit()
         except sqlite3.IntegrityError:
-            flash("Email already registered. Please log in.", "danger")
-            return redirect(url_for('login'))
+            flash("Email already registered. Please use a different email.", "danger")
+            return render_template('signup.html', name=name, email=email)
 
         flash("Account created successfully. Please log in.", "success")
         return redirect(url_for('login'))
