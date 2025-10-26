@@ -9,47 +9,31 @@
 {% block content %}
 <section class="dashboard-section py-5">
   <div class="container-fluid">
-    <!-- Welcome -->
-    <h2 class="mb-4 text-white">Welcome, {{ session['user_name'] }}!</h2>
-    <p class="mb-4 text-white">Here are your recent health checks and predictions.</p>
 
-    <!-- Open Chatbot Button -->
-    <div class="mb-4">
-      <a href="{{ url_for('chatbot') }}" class="btn btn-success">Open Chatbot</a>
+    <!-- Welcome Card -->
+    <div class="welcome-card p-4 mb-4 shadow">
+      <h2 class="fw-bold">Welcome back, {{ session['user_name'] }} 👋</h2>
+      <p>Stay healthy, stay informed — explore your personalized AI health assistant below.</p>
     </div>
 
-    <!-- Recent Results -->
-    <div class="card">
-      <h5 class="mb-3">Recent Results</h5>
-      {% if results %}
-      <div class="table-responsive">
-        <table class="table table-striped table-hover">
-          <thead class="table-primary">
-            <tr>
-              <th>Date</th>
-              <th>Module</th>
-              <th>Input Data</th>
-              <th>Prediction</th>
-              <th>Risk Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in results %}
-            <tr>
-              <td>{{ row['created_at'] }}</td>
-              <td>{{ row['module'] }}</td>
-              <td>{{ row['input_data'] }}</td>
-              <td>{{ row['prediction'] }}</td>
-              <td>{{ row['risk_score'] if row['risk_score'] else 'N/A' }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+    <!-- Open Chatbot -->
+    <div class="row justify-content-center mb-5">
+      <div class="col-md-6">
+        <div class="action-card text-center p-4 shadow">
+          <i class="bi bi-chat-dots-fill icon"></i>
+          <h5 class="fw-bold">Open Chatbot</h5>
+          <p>Start chatting with your AI-powered health assistant instantly.</p>
+          <a href="{{ url_for('chatbot') }}" class="btn btn-success mt-2">Open Chatbot</a>
+        </div>
       </div>
-      {% else %}
-      <p>No results found. Start a symptom check to see your data here!</p>
-      {% endif %}
     </div>
+
+    <!-- Health Tips -->
+    <div class="tips-card p-4 shadow">
+      <h4 class="fw-bold mb-3">💡 Health Tip of the Day</h4>
+      <p id="health-tip"></p>
+    </div>
+
   </div>
 </section>
 {% endblock %}

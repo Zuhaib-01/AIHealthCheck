@@ -1,77 +1,39 @@
-/* Dashboard Section */
-.dashboard-section {
-    min-height: 80vh;
-    background: linear-gradient(to bottom right, #007bff, #00d4ff);
-    color: #fff;
-    padding: 40px 20px;
+body {
+  background: linear-gradient(to bottom right, #007bff, #00bfff);
+  color: #333;
 }
 
-/* Headings and Text */
-.dashboard-section h2,
-.dashboard-section p {
-    color: #fff;
+.dashboard-section {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* Common Card Style */
+.welcome-card,
+.action-card,
+.tips-card {
+  background: #ffffff;
+  border-radius: 16px;
+  color: #333;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.welcome-card:hover,
+.action-card:hover,
+.tips-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+/* Icons */
+.icon {
+  font-size: 2.5rem;
+  color: #007bff;
+  margin-bottom: 10px;
 }
 
 /* Buttons */
-.dashboard-section .btn {
-    border-radius: 8px;
-    font-weight: 600;
-    transition: transform 0.2s ease;
-}
-
-.dashboard-section .btn:hover {
-    transform: translateY(-2px);
-}
-
-/* Card Styling */
-.dashboard-section .card {
-    background: transparent !important;
-    box-shadow: none !important;
-    padding: 20px;
-    border-radius: 12px;
-    color: #fff;
-}
-
-/* Table Styling */
-.dashboard-section table {
-    width: 100%;
-    border-collapse: collapse;
-    color: #fff;
-}
-
-.dashboard-section thead {
-    background-color: rgba(255, 255, 255, 0.2);
-    color: #fff;
-}
-
-.dashboard-section tbody tr {
-    transition: background-color 0.2s ease;
-}
-
-.dashboard-section tbody tr:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.dashboard-section th,
-.dashboard-section td {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 10px;
-    text-align: left;
-}
-
-/* Responsive adjustments */
-@media (max-width: 576px) {
-    .dashboard-section {
-        padding: 20px 10px;
-    }
-
-    .dashboard-section .card {
-        padding: 15px;
-    }
-
-    .dashboard-section th,
-    .dashboard-section td {
-        padding: 8px;
-        font-size: 0.85rem;
-    }
+.btn {
+  border-radius: 10px;
+  font-weight: 600;
 }
