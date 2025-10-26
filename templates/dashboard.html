@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - AI Health Check{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="dashboard-section py-5">
+  <div class="container">
+    <!-- Welcome -->
+    <h2 class="mb-4 text-primary">Welcome, {{ session['user_name'] }}!</h2>
+    <p class="mb-4">Here are your recent health checks and predictions.</p>
+
+    <!-- Action Buttons -->
+    <div class="mb-4">
+      <a href="{{ url_for('home') }}" class="btn btn-success me-2">Check Symptoms</a>
+      <a href="{{ url_for('home') }}" class="btn btn-info">Predict Disease Risk</a>
+    </div>
+
+    <!-- Recent Results -->
+    <div class="card shadow-sm p-3">
+      <h5 class="mb-3">Recent Results</h5>
+      {% if results %}
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead class="table-primary">
+            <tr>
+              <th>Date</th>
+              <th>Module</th>
+              <th>Input Data</th>
+              <th>Prediction</th>
+              <th>Risk Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in results %}
+            <tr>
+              <td>{{ row['created_at'] }}</td>
+              <td>{{ row['module'] }}</td>
+              <td>{{ row['input_data'] }}</td>
+              <td>{{ row['prediction'] }}</td>
+              <td>{{ row['risk_score'] if row['risk_score'] else 'N/A' }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p>No results found. Start a symptom check to see your data here!</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
