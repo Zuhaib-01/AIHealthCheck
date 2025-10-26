@@ -1,10 +1,11 @@
 /* 🌈 Background */
 .login-section {
   min-height: 90vh;
-  background: linear-gradient(135deg, #007bff, #00c6ff);
+  /* background: linear-gradient(135deg, #007bff, #00c6ff); */
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent;
 }
 
 /* 🪪 Login Card */

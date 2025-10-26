@@ -1,7 +1,7 @@
 /* 🌈 Background */
 .signup-section {
   min-height: calc(100vh - 130px);
-  background: linear-gradient(135deg, #007bff, #00c6ff);
+  /* background: linear-gradient(135deg, #007bff, #00c6ff); */
   display: flex;
   align-items: center;
   justify-content: center;
