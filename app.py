@@ -23,6 +23,8 @@ def close_db(error):
 # ---------- public pages ----------
 @app.route('/')
 def home():
+    if 'user_id' in session:
+        return redirect(url_for('dashboard'))
     return render_template('index.html')
 
 @app.route('/about')
