@@ -2,7 +2,11 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 from pathlib import Path
-from utils.chatbot import generate_response, load_datasets
+from utils.chatbot import generate_response, load_shared_datasets
+import csv
+from datetime import datetime
+from pathlib import Path
+
 
 app = Flask(__name__, static_folder='assets')
 app.secret_key = "replace_this_with_a_random_secret"  # change to a secure random string in production
@@ -26,7 +30,7 @@ def close_db(error):
         db.close()
 
 # ---------- load datasets once ----------
-dfs = load_datasets()
+dfs = load_shared_datasets()
 
 # ---------- public pages ----------
 @app.route('/')
@@ -130,14 +134,46 @@ def chatbot_message():
     data = request.get_json()
     user_input = data.get("message", "").strip()
     user_id = session.get("user_id")
+    user_name = session.get("user_name")
 
     if not user_input:
         return jsonify({"error": "Empty message"}), 400
 
-    # Generate chatbot response locally
-    response_text, dataset_used = generate_response(user_input, dfs)
+    # 📂 Ensure chat_history folder exists
+    CHAT_HISTORY_DIR = Path(__file__).parent / "chat_history"
+    CHAT_HISTORY_DIR.mkdir(exist_ok=True)
 
-    # Store chat in database
+    # 📄 Create per-user CSV file (e.g., chat_user_3.csv)
+    chat_file = CHAT_HISTORY_DIR / f"chat_user_{user_id}.csv"
+
+    # 🧠 Read previous chat history (if file exists)
+    chat_context = ""
+    if chat_file.exists():
+        with open(chat_file, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                chat_context += f"User: {row['message']}\nBot: {row['response']}\n"
+
+    # 🗣 Combine past chats with the new message
+    prompt = f"""{chat_context}\nUser: {user_input}\nBot:"""
+
+    # 💡 Generate chatbot response using local datasets
+    response_text, dataset_used = generate_response(prompt, dfs)
+
+    # 🧾 Save this new interaction in the user's CSV file
+    file_exists = chat_file.exists()
+    with open(chat_file, "a", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=["timestamp", "message", "response", "dataset_used"])
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow({
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "message": user_input,
+            "response": response_text,
+            "dataset_used": dataset_used
+        })
+
+    # ✅ Also save to database for reference (optional, can remove)
     db = get_db()
     db.execute('''
         INSERT INTO chat_history (user_id, message, response, dataset_used)
@@ -146,6 +182,8 @@ def chatbot_message():
     db.commit()
 
     return jsonify({"reply": response_text})
+
+
 
 # ---------- save a sample result endpoint ----------
 @app.route('/save_result', methods=['POST'])
