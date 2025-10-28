@@ -1,36 +1,75 @@
 {% extends "base.html" %}
-{% block title %}Medical Chatbot{% endblock %}
+{% block title %}Chatbot | AI Health Check{% endblock %}
+
 {% block content %}
-<div class="container mt-5">
-  <h2 class="text-center mb-4 text-primary">💬 Medical Data Chatbot</h2>
+<div class="container py-5" style="max-width: 700px;">
+  <h2 class="text-center mb-4 text-primary fw-bold">💬 Medical Chatbot</h2>
 
-  <div id="chat-box" class="border rounded p-3 mb-3" style="height: 400px; overflow-y: auto;">
+  <div id="chat-box" class="border rounded p-3 bg-light" style="height: 420px; overflow-y: auto;">
+    <div class="text-muted small text-center mb-2">Start chatting with the medical assistant</div>
   </div>
 
-  <div class="input-group">
-    <input type="text" id="user-input" class="form-control" placeholder="Ask a medical question...">
-    <button class="btn btn-primary" id="send-btn">Send</button>
-  </div>
+  <form id="chat-form" class="mt-3 d-flex">
+    <input id="user-input" type="text" class="form-control me-2" placeholder="Type your message..." required>
+    <button class="btn btn-primary" type="submit">Send</button>
+  </form>
 </div>
 
 <script>
-document.getElementById("send-btn").addEventListener("click", async () => {
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("chat-form");
   const input = document.getElementById("user-input");
-  const message = input.value.trim();
-  if (!message) return;
-
   const chatBox = document.getElementById("chat-box");
-  chatBox.innerHTML += `<p><b>You:</b> ${message}</p>`;
-  input.value = "";
 
-  const res = await fetch("/chatbot/message", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message })
+  function appendMessage(sender, text) {
+    const msg = document.createElement("div");
+    msg.className = sender === "user" ? "text-end mb-2" : "text-start mb-2";
+
+    msg.innerHTML = sender === "user"
+      ? `<div class="d-inline-block bg-primary text-white p-2 rounded-3">${text}</div>`
+      : `<div class="d-inline-block bg-white border p-2 rounded-3">${text}</div>`;
+
+    chatBox.appendChild(msg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const message = input.value.trim();
+    if (!message) return;
+
+    // show user message
+    appendMessage("user", message);
+    input.value = "";
+
+    // show loading message
+    const loadingMsg = document.createElement("div");
+    loadingMsg.className = "text-start mb-2 text-muted";
+    loadingMsg.textContent = "🤖 Typing...";
+    chatBox.appendChild(loadingMsg);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    try {
+      const res = await fetch("/chatbot/message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message })
+      });
+
+      const data = await res.json();
+      chatBox.removeChild(loadingMsg);
+
+      if (data.reply) {
+        appendMessage("bot", data.reply);
+      } else {
+        appendMessage("bot", "⚠️ Sorry, I couldn't generate a response.");
+      }
+    } catch (err) {
+      chatBox.removeChild(loadingMsg);
+      appendMessage("bot", "❌ Error connecting to chatbot backend.");
+      console.error(err);
+    }
   });
-  const data = await res.json();
-  chatBox.innerHTML += `<p><b>Bot:</b> ${data.reply}</p>`;
-  chatBox.scrollTop = chatBox.scrollHeight;
 });
 </script>
 {% endblock %}
