@@ -36,6 +36,19 @@ CREATE TABLE IF NOT EXISTS results (
 );
 ''')
 
+# Chat history table
+c.execute('''
+CREATE TABLE IF NOT EXISTS chat_history (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER,
+    message TEXT,
+    response TEXT,
+    dataset_used TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+''')
+
 conn.commit()
 conn.close()
 print("✅ Database & tables created at", DB_PATH)
