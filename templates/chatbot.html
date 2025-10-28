@@ -1,29 +1,36 @@
 {% extends "base.html" %}
-
-{% block title %}Chatbot - AI Health Check{% endblock %}
-
-{% block extra_css %}
-<style>
-  .chatbot-section {
-    height: 90vh; /* adjust as needed */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(135deg, #007bff, #00c6ff);
-  }
-
-  .chatbot-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-  }
-</style>
-{% endblock %}
-
+{% block title %}Medical Chatbot{% endblock %}
 {% block content %}
-<section class="chatbot-section">
-  <iframe class="chatbot-iframe" src="https://aihealthchatbot.streamlit.app/?embed=true" title="AI Health Chatbot"></iframe>
-</section>
+<div class="container mt-5">
+  <h2 class="text-center mb-4 text-primary">💬 Medical Data Chatbot</h2>
+
+  <div id="chat-box" class="border rounded p-3 mb-3" style="height: 400px; overflow-y: auto;">
+  </div>
+
+  <div class="input-group">
+    <input type="text" id="user-input" class="form-control" placeholder="Ask a medical question...">
+    <button class="btn btn-primary" id="send-btn">Send</button>
+  </div>
+</div>
+
+<script>
+document.getElementById("send-btn").addEventListener("click", async () => {
+  const input = document.getElementById("user-input");
+  const message = input.value.trim();
+  if (!message) return;
+
+  const chatBox = document.getElementById("chat-box");
+  chatBox.innerHTML += `<p><b>You:</b> ${message}</p>`;
+  input.value = "";
+
+  const res = await fetch("/chatbot/message", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ message })
+  });
+  const data = await res.json();
+  chatBox.innerHTML += `<p><b>Bot:</b> ${data.reply}</p>`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
+</script>
 {% endblock %}
