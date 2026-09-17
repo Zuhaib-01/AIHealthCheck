@@ -1,0 +1,32 @@
+.dashboard-page h1 {
+  margin-bottom: var(--space-1);
+}
+.dashboard-page > p {
+  color: var(--color-ink-soft);
+}
+.dashboard-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: var(--space-6) 0 var(--space-8);
+}
+.dashboard-cta h3 { margin-bottom: var(--space-1); }
+.dashboard-cta p { margin: 0; color: var(--color-ink-soft); }
+.results-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.result-row {
+  padding: var(--space-4) var(--space-6);
+}
+.result-row > div {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-1);
+}
+.result-date {
+  color: var(--color-ink-soft);
+  font-size: 0.85rem;
+}

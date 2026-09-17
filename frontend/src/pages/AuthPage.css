@@ -1,0 +1,17 @@
+.auth-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-4);
+}
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+}
+.auth-switch {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+  margin: 0;
+}

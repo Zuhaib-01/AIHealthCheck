@@ -89,16 +89,25 @@ def generate_response(prompt: str, shared_dfs: Dict[str, Optional[pd.DataFrame]]
     dataset_context, dataset_used = _build_dataset_context(dataset_name, shared_dfs)
 
     # 3) Construct final prompt that includes dataset snippet (if any) + chat prompt
+    disclaimer_guard = (
+        "Do not open with or repeat generic disclaimers such as 'I'm not a medical professional' "
+        "or 'I am an AI' — the user already knows this. Answer directly and helpfully. "
+        "Only mention seeing a doctor if the symptoms described sound genuinely serious or urgent, "
+        "and keep that note brief and specific rather than a blanket caveat."
+    )
+
     if dataset_context:
         final_prompt = (
             "You are a helpful medical assistant chatbot. Use the dataset below (if relevant) and the chat history "
-            "to answer the user's question accurately. Do NOT assume the dataset represents the user's personal health report.\n\n"
+            "to answer the user's question accurately. Do NOT assume the dataset represents the user's personal health report. "
+            f"{disclaimer_guard}\n\n"
             f"Dataset Preview ({dataset_used}):\n{dataset_context}\n\n"
             f"Conversation and question:\n{prompt}\n\nAnswer concisely and accurately based on the dataset and conversation."
         )
     else:
         final_prompt = (
-            "You are a helpful medical assistant chatbot. Use the conversation below to answer the user's question.\n\n"
+            "You are a helpful medical assistant chatbot. Use the conversation below to answer the user's question. "
+            f"{disclaimer_guard}\n\n"
             f"{prompt}\n\nAnswer concisely and accurately."
         )
 
