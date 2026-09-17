@@ -1,0 +1,18 @@
+.alert {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  margin-bottom: var(--space-4);
+}
+.alert-danger {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+.alert-warn {
+  background: var(--color-warn-bg);
+  color: #8a5a10;
+}
+.alert-success {
+  background: #E3F0EC;
+  color: var(--color-accent-hover);
+}

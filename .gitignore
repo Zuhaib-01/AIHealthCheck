@@ -1,2 +1,8 @@
 /database/users.db
 /chat_history/
+__pycache__/
+*.pyc
+
+# frontend
+/frontend/node_modules/
+/frontend/dist/
