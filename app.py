@@ -3,9 +3,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 from pathlib import Path
 from utils.chatbot import generate_response, load_shared_datasets
-import csv
-from datetime import datetime
-from pathlib import Path
 
 
 app = Flask(__name__, static_folder='assets')
@@ -127,6 +124,32 @@ def dashboard():
 def chatbot():
     return render_template('chatbot.html')
 
+# ---------- chatbot history (read) ----------
+HISTORY_LIMIT = 20  # number of past turns to load as context / show on page load
+
+def get_recent_history(db, user_id, limit=HISTORY_LIMIT):
+    """Fetch the user's most recent chat turns from the DB, oldest first."""
+    rows = db.execute(
+        '''SELECT message, response, created_at FROM chat_history
+           WHERE user_id = ?
+           ORDER BY created_at DESC, id DESC
+           LIMIT ?''',
+        (user_id, limit)
+    ).fetchall()
+    return list(reversed(rows))  # chronological order for display / prompting
+
+@app.route('/chatbot/history', methods=['GET'])
+@login_required
+def chatbot_history():
+    db = get_db()
+    rows = get_recent_history(db, session['user_id'])
+    return jsonify({
+        "history": [
+            {"message": r["message"], "response": r["response"], "created_at": r["created_at"]}
+            for r in rows
+        ]
+    })
+
 # ---------- chatbot (AJAX API) ----------
 @app.route('/chatbot/message', methods=['POST'])
 @login_required
@@ -134,47 +157,25 @@ def chatbot_message():
     data = request.get_json()
     user_input = data.get("message", "").strip()
     user_id = session.get("user_id")
-    user_name = session.get("user_name")
 
     if not user_input:
         return jsonify({"error": "Empty message"}), 400
 
-    # 📂 Ensure chat_history folder exists
-    CHAT_HISTORY_DIR = Path(__file__).parent / "chat_history"
-    CHAT_HISTORY_DIR.mkdir(exist_ok=True)
+    db = get_db()
 
-    # 📄 Create per-user CSV file (e.g., chat_user_3.csv)
-    chat_file = CHAT_HISTORY_DIR / f"chat_user_{user_id}.csv"
-
-    # 🧠 Read previous chat history (if file exists)
-    chat_context = ""
-    if chat_file.exists():
-        with open(chat_file, "r", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                chat_context += f"User: {row['message']}\nBot: {row['response']}\n"
+    # 🧠 Read previous chat history from the database (source of truth)
+    rows = get_recent_history(db, user_id)
+    chat_context = "".join(
+        f"User: {row['message']}\nBot: {row['response']}\n" for row in rows
+    )
 
     # 🗣 Combine past chats with the new message
-    prompt = f"""{chat_context}\nUser: {user_input}\nBot:"""
+    prompt = f"{chat_context}\nUser: {user_input}\nBot:"
 
     # 💡 Generate chatbot response using local datasets
     response_text, dataset_used = generate_response(prompt, dfs)
 
-    # 🧾 Save this new interaction in the user's CSV file
-    file_exists = chat_file.exists()
-    with open(chat_file, "a", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=["timestamp", "message", "response", "dataset_used"])
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow({
-            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "message": user_input,
-            "response": response_text,
-            "dataset_used": dataset_used
-        })
-
-    # ✅ Also save to database for reference (optional, can remove)
-    db = get_db()
+    # 🧾 Save this new interaction to the database (single source of truth)
     db.execute('''
         INSERT INTO chat_history (user_id, message, response, dataset_used)
         VALUES (?, ?, ?, ?)

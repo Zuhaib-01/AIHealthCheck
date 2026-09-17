@@ -168,6 +168,24 @@
       scrollToBottom();
     }
 
+    // Load prior conversation from the database on page open
+    async function loadHistory() {
+      try {
+        const res = await fetch("/chatbot/history");
+        const data = await res.json();
+        if (data.history && data.history.length > 0) {
+          chatBox.innerHTML = ""; // clear the "start chatting" placeholder
+          data.history.forEach(turn => {
+            appendMessage("user", turn.message);
+            appendMessage("bot", turn.response.replace(/\n/g, "<br>"));
+          });
+        }
+      } catch (err) {
+        console.error("Failed to load chat history:", err);
+      }
+    }
+    loadHistory();
+
     // Show typing indicator
     function showTypingIndicator() {
       const typing = document.createElement("div");
