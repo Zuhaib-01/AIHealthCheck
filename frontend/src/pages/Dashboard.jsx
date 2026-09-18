@@ -5,6 +5,7 @@ import { api } from '../api/client';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import './Dashboard.css';
+import { formatTimestamp } from '../utils/formatDate';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -42,7 +43,7 @@ export default function Dashboard() {
             <Card key={i} className="result-row">
               <div>
                 <strong>You asked</strong>
-                <span className="result-date">{turn.created_at}</span>
+                <span className="result-date">{formatTimestamp(turn.created_at)}</span>
               </div>
               <p>{turn.message}</p>
             </Card>
