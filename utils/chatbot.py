@@ -93,7 +93,10 @@ def generate_response(prompt: str, shared_dfs: Dict[str, Optional[pd.DataFrame]]
         "Do not open with or repeat generic disclaimers such as 'I'm not a medical professional' "
         "or 'I am an AI' — the user already knows this. Answer directly and helpfully. "
         "Only mention seeing a doctor if the symptoms described sound genuinely serious or urgent, "
-        "and keep that note brief and specific rather than a blanket caveat."
+        "and keep that note brief and specific rather than a blanket caveat. "
+        "Never repeat a previous answer word-for-word. If the user's latest message is a short "
+        "acknowledgement or filler (like 'ok', 'thanks', 'got it', 'alright'), respond briefly and "
+        "naturally — do not restate earlier information."
     )
 
     if dataset_context:
@@ -112,7 +115,7 @@ def generate_response(prompt: str, shared_dfs: Dict[str, Optional[pd.DataFrame]]
         )
 
     # 4) Call local Ollama LLM
-    llm = OllamaLLM(model="llama3.2", temperature=0)
+    llm = OllamaLLM(model="llama3.2", temperature=0.4)
     try:
         response = llm.invoke(final_prompt)
         # response may be text or may be dict-like depending on wrapper
