@@ -23,7 +23,7 @@ def load_shared_datasets() -> Dict[str, Optional[pd.DataFrame]]:
     ]
     dfs: Dict[str, Optional[pd.DataFrame]] = {}
     for fname in files:
-        path = PROJECT_ROOT / fname
+        path = BASE_DIR / fname  # CSVs live inside utils/, alongside this file
         try:
             dfs[fname] = pd.read_csv(path)
         except Exception:
