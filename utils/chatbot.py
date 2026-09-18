@@ -78,7 +78,8 @@ def _build_dataset_context(dataset_name: Optional[str], shared_dfs: Dict[str, Op
 def generate_response(prompt: str, shared_dfs: Dict[str, Optional[pd.DataFrame]]) -> Tuple[str, str]:
     """
     Generate a response using the local Ollama model.
-    - 'prompt' should already include chat history and the latest user message.
+    - 'prompt' should already include chat history and the latest user message,
+      ending exactly with "...\\nUser: <message>\\nBot:" (no trailing text after "Bot:").
     - 'shared_dfs' is the dict returned by load_shared_datasets().
     Returns: (response_text, dataset_used)
     """
@@ -88,10 +89,18 @@ def generate_response(prompt: str, shared_dfs: Dict[str, Optional[pd.DataFrame]]
     # 2) Build a dataset context snippet (small) to include if available
     dataset_context, dataset_used = _build_dataset_context(dataset_name, shared_dfs)
 
-    # 3) Construct final prompt that includes dataset snippet (if any) + chat prompt
-    disclaimer_guard = (
+    # 3) Build instructions. Everything the model needs to know goes BEFORE the
+    # conversation history — the prompt must end exactly at "Bot:" with nothing
+    # after it, or completion-style models get confused about where their turn
+    # starts and may echo/continue the whole transcript instead of answering.
+    instructions = (
+        "You are a helpful medical assistant chatbot in an ongoing conversation. "
+        "Respond with ONLY your reply as the Bot for the latest User message below — "
+        "plain text, no 'User:' or 'Bot:' labels, no restating or listing earlier turns, "
+        "no meta-commentary like 'Here's a concise response'. Just answer naturally, "
+        "as if speaking directly to the user in a single turn.\n"
         "Do not open with or repeat generic disclaimers such as 'I'm not a medical professional' "
-        "or 'I am an AI' — the user already knows this. Answer directly and helpfully. "
+        "or 'I am an AI' — the user already knows this. "
         "Only mention seeing a doctor if the symptoms described sound genuinely serious or urgent, "
         "and keep that note brief and specific rather than a blanket caveat. "
         "Never repeat a previous answer word-for-word. If the user's latest message is a short "
@@ -100,30 +109,32 @@ def generate_response(prompt: str, shared_dfs: Dict[str, Optional[pd.DataFrame]]
     )
 
     if dataset_context:
-        final_prompt = (
-            "You are a helpful medical assistant chatbot. Use the dataset below (if relevant) and the chat history "
-            "to answer the user's question accurately. Do NOT assume the dataset represents the user's personal health report. "
-            f"{disclaimer_guard}\n\n"
-            f"Dataset Preview ({dataset_used}):\n{dataset_context}\n\n"
-            f"Conversation and question:\n{prompt}\n\nAnswer concisely and accurately based on the dataset and conversation."
-        )
-    else:
-        final_prompt = (
-            "You are a helpful medical assistant chatbot. Use the conversation below to answer the user's question. "
-            f"{disclaimer_guard}\n\n"
-            f"{prompt}\n\nAnswer concisely and accurately."
+        instructions += (
+            f"\n\nRelevant dataset preview ({dataset_used}) — use it only if relevant, and do NOT "
+            f"assume it represents the user's personal health report:\n{dataset_context}"
         )
 
-    # 4) Call local Ollama LLM
-    llm = OllamaLLM(model="llama3.2", temperature=0.4)
+    final_prompt = f"{instructions}\n\nConversation so far:\n{prompt}"
+
+    # 4) Call local Ollama LLM. stop sequences are a hard backstop: if the model
+    # tries to hallucinate a new "User:" turn instead of stopping, cut it off there.
+    llm = OllamaLLM(model="llama3.2", temperature=0.4, stop=["\nUser:", "\nUser :", "\nuser:"])
     try:
         response = llm.invoke(final_prompt)
-        # response may be text or may be dict-like depending on wrapper
         if isinstance(response, dict):
-            # try some possible keys
             response_text = response.get("content") or response.get("text") or str(response)
         else:
             response_text = str(response)
+
+        # Safety net in case the model still echoes a transcript-style reply
+        # despite the stop sequence (some models don't honor it reliably).
+        for marker in ("\nUser:", "\nUser :", "User:"):
+            idx = response_text.find(marker)
+            if idx != -1:
+                response_text = response_text[:idx]
+        response_text = response_text.strip()
+        if response_text[:4].lower() == "bot:":
+            response_text = response_text[4:].strip()
     except Exception as e:
         response_text = f"Error generating response: {e}"
 
