@@ -1,10 +1,13 @@
 .app-shell {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 .app-sidebar {
   width: 220px;
   flex-shrink: 0;
+  height: 100%;
+  overflow-y: auto;
   background: var(--color-ink);
   color: #fff;
   display: flex;
@@ -62,7 +65,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100%;
   overflow-y: auto;
 }
 .app-main-content {
@@ -74,9 +77,11 @@
 }
 
 @media (max-width: 720px) {
-  .app-shell { flex-direction: column; }
+  .app-shell { flex-direction: column; height: auto; min-height: 100vh; overflow: visible; }
   .app-sidebar {
     width: 100%;
+    height: auto;
+    overflow: visible;
     flex-direction: row;
     align-items: center;
     padding: var(--space-3) var(--space-4);
