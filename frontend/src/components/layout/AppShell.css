@@ -1,13 +1,14 @@
 .app-shell {
   display: flex;
-  height: 100vh;
-  overflow: hidden;
+  align-items: flex-start;
+  min-height: 100vh;
 }
 .app-sidebar {
   width: 220px;
   flex-shrink: 0;
-  height: 100%;
-  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   background: var(--color-ink);
   color: #fff;
   display: flex;
@@ -65,23 +66,22 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  overflow-y: auto;
+  min-height: 100vh;
+  min-width: 0;
 }
 .app-main-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   padding: var(--space-8);
-  min-height: 0;
 }
 
 @media (max-width: 720px) {
-  .app-shell { flex-direction: column; height: auto; min-height: 100vh; overflow: visible; }
+  .app-shell { flex-direction: column; }
   .app-sidebar {
     width: 100%;
     height: auto;
-    overflow: visible;
+    position: static;
     flex-direction: row;
     align-items: center;
     padding: var(--space-3) var(--space-4);

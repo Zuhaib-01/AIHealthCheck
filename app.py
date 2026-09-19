@@ -147,10 +147,9 @@ def api_chat_message():
 
     db = get_db()
     rows = get_recent_history(db, user_id)
-    chat_context = "".join(f"User: {row['message']}\nBot: {row['response']}\n" for row in rows)
-    prompt = f"{chat_context}\nUser: {user_input}\nBot:"
+    history = [{"message": row["message"], "response": row["response"]} for row in rows]
 
-    response_text, dataset_used = generate_response(prompt, dfs)
+    response_text, dataset_used = generate_response(user_input, history, dfs)
 
     db.execute(
         "INSERT INTO chat_history (user_id, message, response, dataset_used) VALUES (?, ?, ?, ?)",
