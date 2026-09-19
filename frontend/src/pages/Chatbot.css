@@ -1,7 +1,8 @@
 .chatbot-page {
-  margin: 0 auto;
-  width: 100%;
   flex: 1;
   display: flex;
   min-height: 0;
+  height: 100vh;
+  /* cancel out app-main-content's padding so this fills the true available space */
+  margin: calc(var(--space-8) * -1);
 }
